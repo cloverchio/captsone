@@ -1,0 +1,39 @@
+#candidate-form {
+    display:block;
+    width:50%;
+    margin:0 auto;
+}
+
+.button-container {
+    display:block;
+    width:50%;
+    margin:0 auto;
+}
+
+.btn {
+    width:30%;
+    padding:10%;
+}
+
+.candidate-button-container {
+    padding-bottom:2%;
+    width:100%;
+    display:inline-block;
+}
+
+#create-candidate {
+    width:185px;
+    float:right;
+}
+
+#candidate-form-container {
+    height:100%;
+}
+
+#candidate-submit {
+    margin-right:2%;
+}
+
+#candidate-cancel {
+    margin-left:2%;
+}
