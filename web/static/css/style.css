@@ -4,12 +4,6 @@
     margin:0 auto;
 }
 
-.button-container {
-    display:block;
-    width:50%;
-    margin:0 auto;
-}
-
 .btn {
     width:30%;
     padding:10%;
@@ -22,18 +16,39 @@
 }
 
 #create-candidate {
-    width:185px;
-    float:right;
+    width:20%;
+    margin-right:2%;
+}
+
+#delete-candidates {
+    margin-right:2%;
+    width:20%;
+}
+
+#select-candidates {
+    width:20%;
 }
 
 #candidate-form-container {
     height:100%;
 }
 
+.button-container {
+    display:block;
+    margin:0 auto;
+    width:80%;
+}
+
 #candidate-submit {
-    margin-right:2%;
+    width:40%;
+    float:right;
 }
 
 #candidate-cancel {
-    margin-left:2%;
+    width:40%;
+    float:left;
+}
+
+#candidates-header {
+    padding-bottom:2%;
 }

@@ -5,15 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Recruiting Services Inc.</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous">
+    </script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+    <script src="/js/candidates.js"></script>
 </head>
 <body class="bg-light">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Recruiting Services Inc.</a>
+    <a class="navbar-brand" href="/dashboard">Recruiting Services Inc.</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -36,14 +41,23 @@
     </div>
 </nav>
 <div class="p-5 text-center bg-light">
-    <h2 class="mb-3">Candidates</h2>
+    <h2 id="candidates-header" class="mb-3">Candidates</h2>
     <div class="candidate-button-container">
-        <a id="create-candidate" class="btn btn-dark" href="/candidates/new">New Candidate</a>
+        <a id="create-candidate" class="btn btn-primary" href="/candidates/new" data-toggle="tooltip"
+           data-placement="top"
+           title="Create a new candidate.">New Candidate</a>
+        <button id="delete-candidates" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">
+            <a data-toggle="tooltip" data-placement="top" title="Delete the selected candidates.">
+                Delete Candidates
+            </a>
+        </button>
+        <button id="select-candidates" class="btn btn-secondary" onclick="toggleSelect()" data-toggle="tooltip"
+                data-placement="top" title="Select/unselect all candidates in the table.">Select All
+        </button>
     </div>
     <table class="table table-bordered table-hover">
         <thead>
         <tr>
-            <th scope="col">Candidate Id</th>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Role</th>
@@ -55,17 +69,38 @@
         <tbody>
         {% for candidate in candidates %}
         <tr>
-            <td scope="row">{{candidate.get_candidate_id()}}</td>
             <td scope="row">{{candidate.get_first_name()}}</td>
             <td scope="row">{{candidate.get_last_name()}}</td>
             <td scope="row">{{candidate.get_role()}}</td>
             <td scope="row">{{candidate.get_years_experience()}}</td>
             <td scope="row">{{candidate.get_salary_str()}}</td>
             <td scope="row">{{candidate.get_created_on()}}</td>
+            <td scope="row"><input type="checkbox" name="candidate_checkbox" value="{{candidate.get_candidate_id()}}">
+            </td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
+</div>
+<div id="delete-modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the selected candidates?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="submitDelete()">Delete
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

@@ -33,5 +33,10 @@ class CandidateService:
             return candidate_id
 
     @staticmethod
+    def delete_candidates(candidate_ids):
+        for candidate_id in candidate_ids:
+            CandidateService.delete_candidate(candidate_id)
+
+    @staticmethod
     def delete_candidate(candidate_id):
         CandidateDAO.delete_candidate(candidate_id)
