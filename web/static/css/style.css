@@ -52,3 +52,17 @@
 #candidates-header {
     padding-bottom:2%;
 }
+
+#login-form {
+    display:block;
+    width:40%;
+    margin:0 auto;
+}
+
+#login-form-container {
+    height:100%;
+}
+
+#login-header-container {
+    margin-bottom:3%;
+}

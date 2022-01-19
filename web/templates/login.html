@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recruiting Services Inc.</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="/js/candidates.js"></script>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/login">Recruiting Services Inc.</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+<div id="login-form-container" class="p-5 text-center bg-light">
+    <div id="login-header-container">
+        <h1 class="mb-3">Dashboard Login</h1>
+    </div>
+    {% if invalid_login %}
+    <div class="alert alert-danger" role="alert">
+        {{invalid_login}}
+    </div>
+    {% endif %}
+    <div id="login-container">
+        <form id="login-form" action="/login" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input name="username" type="text" class="form-control" id="username" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input name="password" type="password" class="form-control" id="password" placeholder="Password"
+                       required>
+            </div>
+            <input class="btn btn-primary" type="submit" value="Login">
+        </form>
+    </div>
+</div>
+</body>
+</html>

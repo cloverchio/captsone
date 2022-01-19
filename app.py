@@ -1,29 +1,69 @@
-import flask
 import json
-from flask import Flask, request
+from functools import wraps
+
+import flask
+from flask import Flask, request, session, redirect, url_for
 
 from dao.candidate_dao import CandidateDAO, CandidateDatabaseError
 from service.candidate_service import CandidateService
+from service.config_service import ConfigService
 
 app = Flask(__name__,
             static_url_path='',
             static_folder='web/static',
             template_folder='web/templates')
 
+app.secret_key = 'd6b8ae7b236e4b11bf4b2f3398c718f9'
+
 candidateService = CandidateService()
+configService = ConfigService()
+
+
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        return redirect(url_for('login'))
+
+    return wrap
 
 
 @app.route("/")
 def index():
-    return flask.render_template("index.html")
+    return redirect(url_for('login'))
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    login_template = "login.html"
+    if request.method == 'GET':
+        return flask.render_template(login_template), 200
+    if request.method == 'POST':
+        login_data = request.form.to_dict()
+        login_configs = configService.get_configs()['login']
+        default_username = login_configs['default-username']
+        default_password = login_configs['default-password']
+        if login_data['username'] != default_username and login_data['password'] != default_password:
+            return flask.render_template(login_template, invalid_login="Username or password was incorrect."), 400
+        session['logged_in'] = True
+        return redirect(url_for('dashboard'))
+
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('login'))
 
 
 @app.route("/dashboard")
+@login_required
 def dashboard():
-    return flask.render_template("dashboard.html")
+    return flask.render_template("dashboard.html"), 200
 
 
 @app.route("/candidates", methods=['GET', 'POST'])
+@login_required
 def candidates():
     candidates_template = "candidates.html"
     if request.method == 'GET':
@@ -42,6 +82,7 @@ def candidates():
 
 
 @app.route("/candidates/new", methods=['GET', 'POST'])
+@login_required
 def new_candidate():
     new_candidate_template = "new_candidate.html"
     if request.method == 'GET':
