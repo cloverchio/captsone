@@ -13,9 +13,11 @@ class CandidateDAO:
     def __init__(self):
         pass
 
-    # save candidate information to the db
     @staticmethod
     def save_candidate(candidate):
+        """
+        Saves a candidate object to the db.
+        """
         conn = CandidateDAO.__get_connection()
         try:
             conn.cursor().execute("INSERT INTO candidates (id, first_name, last_name, role, years_experience, salary) "
@@ -32,9 +34,11 @@ class CandidateDAO:
         finally:
             conn.close()
 
-    # delete candidate information from the db
     @staticmethod
     def delete_candidate(candidate_id):
+        """
+        Deletes a single candidate from the db by id.
+        """
         conn = CandidateDAO.__get_connection()
         try:
             conn.cursor().execute("DELETE FROM candidates WHERE id = ?", (candidate_id,))
@@ -44,9 +48,11 @@ class CandidateDAO:
         finally:
             conn.close()
 
-    # retrieve candidate by from the db
     @staticmethod
     def get_candidate(candidate_id):
+        """
+        Retrieves a single candidate from the db by id.
+        """
         conn = CandidateDAO.__get_connection()
         try:
             curr = conn.cursor()
@@ -69,9 +75,11 @@ class CandidateDAO:
             conn.close()
         return None
 
-    # retrieves all candidates from the db
     @staticmethod
     def get_all_candidates():
+        """
+        Retrieves all candidates from the db.
+        """
         conn = CandidateDAO.__get_connection()
         try:
             curr = conn.cursor()
@@ -95,9 +103,11 @@ class CandidateDAO:
         finally:
             conn.close()
 
-    # meant to initialize db on application startup
     @staticmethod
     def init_db():
+        """
+        Used to create the db and initialize the schema on startup.
+        """
         conn = CandidateDAO.__get_connection()
         with open('dao/schema.sql') as f:
             conn.executescript(f.read())
@@ -105,7 +115,6 @@ class CandidateDAO:
             conn.close()
         f.close()
 
-    # establish db connection
     @staticmethod
     def __get_connection():
         try:

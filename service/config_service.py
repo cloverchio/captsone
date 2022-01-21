@@ -7,6 +7,9 @@ class ConfigService:
         self.configs = self.__get_configs()
 
     def get_configs(self):
+        """
+        Returns a dict of config values loaded from a file.
+        """
         return self.configs
 
     @staticmethod
