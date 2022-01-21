@@ -27,9 +27,6 @@
                 <a class="nav-link" href="/candidates">Candidates</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="/logout">Logout</a>
             </li>
         </ul>
@@ -44,15 +41,26 @@
             <div class="carousel-item active">
                 <div class="container">
                     <div class="row">
+                        <div class="col-lg-4 d-none d-lg-block">
+                            <div class="card">
+                                <img src="/images/graph_2.png" class="card-img-top"/>
+                                <div class="card-body">
+                                    <h5 class="card-title">Salary & Experience Correlation</h5>
+                                    <p class="card-text">
+                                        A heatmap outlining the correlation between experience and salary.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-lg-4">
                             <div class="card">
                                 <img
                                         src="/images/graph_1.png" class="card-img-top"/>
                                 <div class="card-body">
-                                    <h5 class="card-title">Salary/Experience Trend</h5>
+                                    <h5 class="card-title">Salary & Experience Trend</h5>
                                     <p class="card-text">
-                                        Some quick example text to build on the card title and make up the bulk
-                                        of the card's content.
+                                        A scatter plot used to observe the relationship between experience and salary
+                                        for the dataset used to train the predictive model.
                                     </p>
                                 </div>
                             </div>
@@ -61,22 +69,11 @@
                             <div class="card">
                                 <img src="/images/graph_3.png" class="card-img-top"/>
                                 <div class="card-body">
-                                    <h5 class="card-title">Salary/Experience Regression</h5>
+                                    <h5 class="card-title">Salary & Experience Regression</h5>
                                     <p class="card-text">
-                                        Some quick example text to build on the card title and make up the bulk
-                                        of the card's content.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 d-none d-lg-block">
-                            <div class="card">
-                                <img src="/images/graph_2.png" class="card-img-top"/>
-                                <div class="card-body">
-                                    <h5 class="card-title">Salary/Experience Correlation</h5>
-                                    <p class="card-text">
-                                        Some quick example text to build on the card title and make up the bulk
-                                        of the card's content.
+                                        A scatter plot used to observe the relationship between experience and salary
+                                        for the dataset used to train the predictive model. The regression line is used
+                                        to get a visual representation of forecasted values.
                                     </p>
                                 </div>
                             </div>
@@ -91,8 +88,8 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Salary Distribution</h5>
                                     <p class="card-text">
-                                        Some quick example text to build on the card title and make up the bulk
-                                        of the card's content.
+                                        Graph displaying the salary distribution among the samples
+                                        used in the dataset.
                                     </p>
                                 </div>
                             </div>
@@ -103,8 +100,8 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Experience Distribution</h5>
                                     <p class="card-text">
-                                        Some quick example text to build on the card title and make up the bulk
-                                        of the card's content.
+                                        Graph displaying the experience distribution among the samples
+                                        used in the dataset.
                                     </p>
                                 </div>
                             </div>
