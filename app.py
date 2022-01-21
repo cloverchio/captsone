@@ -13,10 +13,10 @@ app = Flask(__name__,
             static_folder='web/static',
             template_folder='web/templates')
 
-app.secret_key = 'd6b8ae7b236e4b11bf4b2f3398c718f9'
-
 candidateService = CandidateService()
 configService = ConfigService()
+
+app.secret_key = configService.get_configs()['app']['secret-key']
 
 
 def login_required(f):
