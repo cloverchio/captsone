@@ -20,7 +20,7 @@ class CandidateDAO:
         conn = self.__get_connection()
         try:
             conn.cursor().execute("INSERT INTO candidates (id, first_name, last_name, role, years_experience, salary) "
-                                  "VALUES (?, ?, ?, ?, ?, ?)",
+                                  "VALUES (%s, %s, %s, %s, %d, %s)",
                                   (candidate.get_candidate_id(),
                                    candidate.get_first_name(),
                                    candidate.get_last_name(),
@@ -39,7 +39,7 @@ class CandidateDAO:
         """
         conn = self.__get_connection()
         try:
-            conn.cursor().execute("DELETE FROM candidates WHERE id = ?", (candidate_id,))
+            conn.cursor().execute("DELETE FROM candidates WHERE id = %s", (candidate_id,))
             conn.commit()
         except Error as e:
             raise CandidateDatabaseError(e)
@@ -54,7 +54,7 @@ class CandidateDAO:
         try:
             curr = conn.cursor()
             curr.execute("SELECT id, first_name, last_name, role, years_experience, salary, created_on "
-                         "FROM candidates WHERE id = ?",
+                         "FROM candidates WHERE id = %s",
                          (candidate_id,))
             values = curr.fetchall()
             if values:
