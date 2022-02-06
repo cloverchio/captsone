@@ -97,6 +97,7 @@ def new_candidate():
                                                             int(candidate_data['experience']))
             return flask.render_template(new_candidate_template, candidate=candidate_id), 201
         except CandidateDatabaseError as e:
+            print(e)
             return flask.render_template(new_candidate_template), 500
 
 
