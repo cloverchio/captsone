@@ -20,7 +20,7 @@ class CandidateDAO:
         conn = self.__get_connection()
         try:
             conn.cursor().execute("INSERT INTO candidates (id, first_name, last_name, role, years_experience, salary) "
-                                  "VALUES (%s, %s, %s, %s, %d, %s)",
+                                  "VALUES (%s, %s, %s, %s, %d, %d)",
                                   (candidate.get_candidate_id(),
                                    candidate.get_first_name(),
                                    candidate.get_last_name(),
