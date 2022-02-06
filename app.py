@@ -7,7 +7,6 @@ from flask import Flask, request, session, redirect, url_for
 
 from dao.candidate_dao import CandidateDAO, CandidateDatabaseError
 from service.candidate_service import CandidateService
-from service.config_service import ConfigService
 from service.prediction_service import PredictionService
 
 app = Flask(__name__,
@@ -15,12 +14,11 @@ app = Flask(__name__,
             static_folder='web/static',
             template_folder='web/templates')
 
-configs = ConfigService().get_configs()
 candidate_dao = CandidateDAO(os.environ['DATABASE_URL'])
 prediction_service = PredictionService()
 candidate_service = CandidateService(candidate_dao, prediction_service)
 
-app.secret_key = configs['app']['secret-key']
+app.secret_key = os.environ['SECRET_KEY']
 
 
 def login_required(f):
@@ -45,9 +43,8 @@ def login():
         return flask.render_template(login_template), 200
     if request.method == 'POST':
         login_data = request.form.to_dict()
-        login_configs = configs['login']
-        default_username = login_configs['default-username']
-        default_password = login_configs['default-password']
+        default_username = os.environ['USER']
+        default_password = os.environ['PASS']
         if login_data['username'] != default_username and login_data['password'] != default_password:
             return flask.render_template(login_template, invalid_login="Username or password was incorrect."), 400
         session['logged_in'] = True

@@ -2,5 +2,3 @@
 /venv/
 *.pyc
 .idea
-candidates.db
-/config/config.yaml
