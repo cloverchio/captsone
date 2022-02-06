@@ -1,4 +1,5 @@
 import json
+import os
 from functools import wraps
 
 import flask
@@ -7,16 +8,19 @@ from flask import Flask, request, session, redirect, url_for
 from dao.candidate_dao import CandidateDAO, CandidateDatabaseError
 from service.candidate_service import CandidateService
 from service.config_service import ConfigService
+from service.prediction_service import PredictionService
 
 app = Flask(__name__,
             static_url_path='',
             static_folder='web/static',
             template_folder='web/templates')
 
-candidateService = CandidateService()
-configService = ConfigService()
+configs = ConfigService().get_configs()
+candidate_dao = CandidateDAO(os.environ['DATABASE_URL'])
+prediction_service = PredictionService()
+candidate_service = CandidateService(candidate_dao, prediction_service)
 
-app.secret_key = configService.get_configs()['app']['secret-key']
+app.secret_key = configs['app']['secret-key']
 
 
 def login_required(f):
@@ -41,7 +45,7 @@ def login():
         return flask.render_template(login_template), 200
     if request.method == 'POST':
         login_data = request.form.to_dict()
-        login_configs = configService.get_configs()['login']
+        login_configs = configs['login']
         default_username = login_configs['default-username']
         default_password = login_configs['default-password']
         if login_data['username'] != default_username and login_data['password'] != default_password:
@@ -68,14 +72,14 @@ def candidates():
     candidates_template = "candidates.html"
     if request.method == 'GET':
         try:
-            candidate_data = candidateService.get_candidates()
+            candidate_data = candidate_service.get_candidates()
             return flask.render_template(candidates_template, candidates=candidate_data), 200
         except CandidateDatabaseError:
             return flask.render_template(candidates_template), 500
     if request.method == 'POST':
         try:
             candidate_ids = json.loads(request.data)
-            candidateService.delete_candidates(candidate_ids)
+            candidate_service.delete_candidates(candidate_ids)
             return flask.render_template(candidates_template), 204
         except CandidateDatabaseError:
             return flask.render_template(candidates_template), 500
@@ -90,15 +94,15 @@ def new_candidate():
     if request.method == 'POST':
         try:
             candidate_data = request.form.to_dict()
-            candidate_id = candidateService.save_candidate(candidate_data['first_name'],
-                                                           candidate_data['last_name'],
-                                                           candidate_data['role'],
-                                                           int(candidate_data['experience']))
+            candidate_id = candidate_service.save_candidate(candidate_data['first_name'],
+                                                            candidate_data['last_name'],
+                                                            candidate_data['role'],
+                                                            int(candidate_data['experience']))
             return flask.render_template(new_candidate_template, candidate=candidate_id), 201
         except CandidateDatabaseError:
             return flask.render_template(new_candidate_template), 500
 
 
 if __name__ == '__main__':
-    CandidateDAO.init_db()
+    candidate_dao.init_db()
     app.run()

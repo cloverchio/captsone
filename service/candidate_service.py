@@ -1,28 +1,27 @@
 import uuid
 
-from dao.candidate_dao import CandidateDAO
 from model.candidate import Candidate
-from service.prediction_service import PredictionService
 
 
 class CandidateService:
 
-    def __init__(self):
-        self.prediction_service = PredictionService()
+    def __init__(self,
+                 candidate_dao=None,
+                 prediction_service=None):
+        self.candidate_dao = candidate_dao
+        self.prediction_service = prediction_service
 
-    @staticmethod
-    def get_candidates():
+    def get_candidates(self):
         """
         Retrieves all candidates.
         """
-        return CandidateDAO.get_all_candidates()
+        return self.candidate_dao.get_all_candidates()
 
-    @staticmethod
-    def get_candidate(candidate_id):
+    def get_candidate(self, candidate_id):
         """
         Retrieves a single candidate by id.
         """
-        return CandidateDAO.get_candidate(candidate_id)
+        return self.candidate_dao.get_candidate(candidate_id)
 
     def save_candidate(self, first_name, last_name, role, years_experience):
         """
@@ -38,20 +37,18 @@ class CandidateService:
                                   years_experience,
                                   int(salary_prediction[0]),
                                   None)
-            CandidateDAO.save_candidate(candidate)
+            self.candidate_dao.save_candidate(candidate)
             return candidate_id
 
-    @staticmethod
-    def delete_candidates(candidate_ids):
+    def delete_candidates(self, candidate_ids):
         """
         Deletes multiple candidates by their corresponding ids.
         """
         for candidate_id in candidate_ids:
-            CandidateService.delete_candidate(candidate_id)
+            self.delete_candidate(candidate_id)
 
-    @staticmethod
-    def delete_candidate(candidate_id):
+    def delete_candidate(self, candidate_id):
         """
         Deletes a single candidate by id.
         """
-        CandidateDAO.delete_candidate(candidate_id)
+        self.candidate_dao.delete_candidate(candidate_id)

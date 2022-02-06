@@ -1,5 +1,5 @@
-import sqlite3
-from sqlite3 import Error
+import psycopg2
+from psycopg2 import Error
 
 from model.candidate import Candidate
 
@@ -10,15 +10,14 @@ class CandidateDatabaseError(Exception):
 
 class CandidateDAO:
 
-    def __init__(self):
-        pass
+    def __init__(self, url):
+        self.url = url
 
-    @staticmethod
-    def save_candidate(candidate):
+    def save_candidate(self, candidate):
         """
         Saves a candidate object to the db.
         """
-        conn = CandidateDAO.__get_connection()
+        conn = self.__get_connection()
         try:
             conn.cursor().execute("INSERT INTO candidates (id, first_name, last_name, role, years_experience, salary) "
                                   "VALUES (?, ?, ?, ?, ?, ?)",
@@ -34,12 +33,11 @@ class CandidateDAO:
         finally:
             conn.close()
 
-    @staticmethod
-    def delete_candidate(candidate_id):
+    def delete_candidate(self, candidate_id):
         """
         Deletes a single candidate from the db by id.
         """
-        conn = CandidateDAO.__get_connection()
+        conn = self.__get_connection()
         try:
             conn.cursor().execute("DELETE FROM candidates WHERE id = ?", (candidate_id,))
             conn.commit()
@@ -48,12 +46,11 @@ class CandidateDAO:
         finally:
             conn.close()
 
-    @staticmethod
-    def get_candidate(candidate_id):
+    def get_candidate(self, candidate_id):
         """
         Retrieves a single candidate from the db by id.
         """
-        conn = CandidateDAO.__get_connection()
+        conn = self.__get_connection()
         try:
             curr = conn.cursor()
             curr.execute("SELECT id, first_name, last_name, role, years_experience, salary, created_on "
@@ -75,12 +72,11 @@ class CandidateDAO:
             conn.close()
         return None
 
-    @staticmethod
-    def get_all_candidates():
+    def get_all_candidates(self):
         """
         Retrieves all candidates from the db.
         """
-        conn = CandidateDAO.__get_connection()
+        conn = self.__get_connection()
         try:
             curr = conn.cursor()
             curr.execute("SELECT id, first_name, last_name, role, years_experience, salary, created_on "
@@ -103,21 +99,19 @@ class CandidateDAO:
         finally:
             conn.close()
 
-    @staticmethod
-    def init_db():
+    def init_db(self):
         """
         Used to create the db and initialize the schema on startup.
         """
-        conn = CandidateDAO.__get_connection()
+        conn = self.__get_connection()
         with open('dao/schema.sql') as f:
-            conn.executescript(f.read())
+            conn.execute(f.read())
             conn.commit()
             conn.close()
         f.close()
 
-    @staticmethod
-    def __get_connection():
+    def __get_connection(self):
         try:
-            return sqlite3.connect('candidates.db')
+            return psycopg2.connect(self.url, sslmode='require')
         except Error as e:
             raise CandidateDatabaseError(e)
